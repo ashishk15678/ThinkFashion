@@ -91,7 +91,7 @@ The app will be available at `http://localhost:5173` (or your Vite port).
 ## 🧑‍💼 Admin Panel Access (Test)
 
 - **URL**: `/admin/login` or `/dashboard`
-- **Email**: shanto@gmail.com
+- **Email**: thinkfashion@gmail.com
 - **Password**: abc123
 
 ---

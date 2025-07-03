@@ -20,7 +20,7 @@ const DashComments = () => {
   const fetchComments = async () => {
     try {
       const response = await fetch(
-        `${API_URL}/api/comment/getAllComment?page=${currentPage}&perPage=${perPage}`,
+        `${API_URL}/api/comment/getAllComement?page=${currentPage}&perPage=${perPage}`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
