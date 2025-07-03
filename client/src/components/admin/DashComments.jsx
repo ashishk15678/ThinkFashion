@@ -7,10 +7,11 @@ const DashComments = () => {
   const { currentUser, accessToken } = useSelector((state) => state.user);
   const [comments, setComments] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [commentId, setCommentIdToDelete] = useState('');
+  const [commentId, setCommentIdToDelete] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const perPage = 9;
+  const API_URL = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
 
   useEffect(() => {
     fetchComments();
@@ -19,7 +20,7 @@ const DashComments = () => {
   const fetchComments = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8000/api/comment/getAllComment?page=${currentPage}&perPage=${perPage}`,
+        `${API_URL}/api/comment/getAllComment?page=${currentPage}&perPage=${perPage}`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -40,15 +41,20 @@ const DashComments = () => {
 
   const handleDeleteComment = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/api/comment/deleteComment/${commentId}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
+      const response = await fetch(
+        `${API_URL}/api/comment/deleteComment/${commentId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
       const data = await response.json();
       if (response.ok) {
-        setComments((prev) => prev.filter((comment) => comment._id !== commentId));
+        setComments((prev) =>
+          prev.filter((comment) => comment._id !== commentId)
+        );
         setShowModal(false);
       } else {
         console.log(data.message);
@@ -71,7 +77,7 @@ const DashComments = () => {
       {currentUser.isAdmin && comments.length > 0 ? (
         <>
           <Table hoverable className="shadow-md">
-          <Table.Head>
+            <Table.Head>
               <Table.HeadCell>Date updated</Table.HeadCell>
               <Table.HeadCell>Comment content</Table.HeadCell>
               <Table.HeadCell>Number of likes</Table.HeadCell>
@@ -85,12 +91,12 @@ const DashComments = () => {
                   <Table.Cell>
                     {new Date(comment.createdAt).toLocaleDateString()}
                   </Table.Cell>
-                  
+
                   <Table.Cell>{comment.content}</Table.Cell>
                   <Table.Cell>{comment.numberOfLikes}</Table.Cell>
                   <Table.Cell>{comment.productId}</Table.Cell>
                   <Table.Cell>{comment.userId}</Table.Cell>
-                  
+
                   <Table.Cell>
                     <span
                       onClick={() => {

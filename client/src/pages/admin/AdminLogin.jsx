@@ -38,7 +38,11 @@
 
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { signInStart, signInSuccess, signInFailure } from "../../redux/user/userSlice";
+import {
+  signInStart,
+  signInSuccess,
+  signInFailure,
+} from "../../redux/user/userSlice";
 import { useNavigate } from "react-router-dom";
 
 export default function AdminLogin() {
@@ -47,15 +51,18 @@ export default function AdminLogin() {
   const navigate = useNavigate();
   const [errorMsg, setErrorMsg] = useState("");
 
-  const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e) =>
+    setForm({ ...form, [e.target.name]: e.target.value });
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     dispatch(signInStart());
     setErrorMsg("");
 
+    const API_URL = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
+
     try {
-      const res = await fetch("/api/users/login", {
+      const res = await fetch(`${API_URL}/api/users/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
@@ -70,7 +77,12 @@ export default function AdminLogin() {
       }
 
       if (res.ok && data.success && data.data?.user?.isAdmin) {
-        dispatch(signInSuccess({ user: data.data.user, accessToken: data.data.accessToken }));
+        dispatch(
+          signInSuccess({
+            user: data.data.user,
+            accessToken: data.data.accessToken,
+          })
+        );
         navigate("/dashboard"); // Redirect to admin dashboard
       } else {
         dispatch(signInFailure({ message: "Admin authentication failed" }));
@@ -89,7 +101,9 @@ export default function AdminLogin() {
           Admin Login
         </h2>
 
-        {errorMsg && <p className="text-red-500 text-sm mb-4 text-center">{errorMsg}</p>}
+        {errorMsg && (
+          <p className="text-red-500 text-sm mb-4 text-center">{errorMsg}</p>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <input

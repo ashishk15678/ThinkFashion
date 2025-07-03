@@ -9,7 +9,7 @@ const DashClientOrder = () => {
 
     const fetchOrders = async () => {
         try {
-            const response = await fetch(`http://localhost:8000/api/order/getClientOrders`, {
+            const response = await fetch(`${process.env.VITE_API_URL}/api/order/getClientOrders`, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`
                 }

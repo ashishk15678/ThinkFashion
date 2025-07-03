@@ -277,7 +277,7 @@ const DashboardComp = () => {
   const [totalComments, setCountComment] = useState(0);
 
   const { currentUser, accessToken } = useSelector((state) => state.user);
-  const root = "http://localhost:8000/api";
+  const root = process.env.VITE_API_URl + "/api";
 
   useEffect(() => {
     if (!currentUser?.isAdmin || !accessToken) return;

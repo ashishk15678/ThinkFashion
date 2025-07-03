@@ -3,7 +3,7 @@
 
 // const DashAddProduct = () => {
 //   const { accessToken } = useSelector((state) => state.user);
-//   const [loading, setLoading] = useState(false); 
+//   const [loading, setLoading] = useState(false);
 
 //   const [formData, setFormData] = useState({
 //     name: "",
@@ -51,13 +51,13 @@
 //         },
 //         body: data,
 //       });
-  
+
 //       const responseData = await response.json();
-  
+
 //       if (response.ok) {
 //         setLoading(false);
 //         alert("Product added successfully!");
-        
+
 //         // Optionally, you can reset the form here
 //         setFormData({
 //           name: "",
@@ -269,16 +269,72 @@ const DashAddProduct = () => {
         Add New Product
       </h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-        <input name="name" placeholder="Product Name" value={formData.name} onChange={handleChange} className="input input-bordered input-accent w-80 md:w-96" />
-        <textarea name="description" placeholder="Product Description" value={formData.description} onChange={handleChange} className="textarea textarea-accent"></textarea>
-        <input type="file" name="productImage" accept="image/*" onChange={handleImageChange} className="file-input file-input-bordered w-80 md:w-96" />
-        <input name="price" placeholder="Product Price" value={formData.price} onChange={handleChange} className="input input-bordered input-accent w-80 md:w-96" />
-        <input name="stock" placeholder="Product Stock" value={formData.stock} onChange={handleChange} className="input input-bordered input-accent w-80 md:w-96" />
-        <input name="categoryName" placeholder="Category Name" value={formData.categoryName} onChange={handleChange} className="input input-bordered input-accent w-80 md:w-96" />
-        <input name="categoryType" placeholder="Category Type" value={formData.categoryType} onChange={handleChange} className="input input-bordered input-accent w-80 md:w-96" />
-        <input name="color" placeholder="Color (comma separated)" value={formData.color} onChange={handleChange} className="input input-bordered input-accent w-80 md:w-96" />
-        <input name="size" placeholder="Size (comma separated)" value={formData.size} onChange={handleChange} className="input input-bordered input-accent w-80 md:w-96" />
-        <button type="submit" disabled={loading} className="btn btn-neutral">{loading ? "Loading..." : "Submit"}</button>
+        <input
+          name="name"
+          placeholder="Product Name"
+          value={formData.name}
+          onChange={handleChange}
+          className="input input-bordered input-accent w-80 md:w-96"
+        />
+        <textarea
+          name="description"
+          placeholder="Product Description"
+          value={formData.description}
+          onChange={handleChange}
+          className="textarea textarea-accent"
+        ></textarea>
+        <input
+          type="file"
+          name="productImage"
+          accept="image/*"
+          onChange={handleImageChange}
+          className="file-input file-input-bordered w-80 md:w-96"
+        />
+        <input
+          name="price"
+          placeholder="Product Price"
+          value={formData.price}
+          onChange={handleChange}
+          className="input input-bordered input-accent w-80 md:w-96"
+        />
+        <input
+          name="stock"
+          placeholder="Product Stock"
+          value={formData.stock}
+          onChange={handleChange}
+          className="input input-bordered input-accent w-80 md:w-96"
+        />
+        <input
+          name="categoryName"
+          placeholder="Category Name"
+          value={formData.categoryName}
+          onChange={handleChange}
+          className="input input-bordered input-accent w-80 md:w-96"
+        />
+        <input
+          name="categoryType"
+          placeholder="Category Type"
+          value={formData.categoryType}
+          onChange={handleChange}
+          className="input input-bordered input-accent w-80 md:w-96"
+        />
+        <input
+          name="color"
+          placeholder="Color (comma separated)"
+          value={formData.color}
+          onChange={handleChange}
+          className="input input-bordered input-accent w-80 md:w-96"
+        />
+        <input
+          name="size"
+          placeholder="Size (comma separated)"
+          value={formData.size}
+          onChange={handleChange}
+          className="input input-bordered input-accent w-80 md:w-96"
+        />
+        <button type="submit" disabled={loading} className="btn btn-neutral">
+          {loading ? "Loading..." : "Submit"}
+        </button>
       </form>
     </div>
   );

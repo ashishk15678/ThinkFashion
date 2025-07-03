@@ -15,6 +15,8 @@ const CommentSection = ({ productId }) => {
   const [commentToDelete, setCommentToDelete] = useState(null);
   const navigate = useNavigate();
 
+  const API_URL = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (comment.length > 200) {
@@ -22,7 +24,7 @@ const CommentSection = ({ productId }) => {
     }
     try {
       const res = await fetch(
-        `http://localhost:8000/api/comment/addComment/${productId}`,
+        `${API_URL}/api/comment/addComment/${productId}`,
         {
           method: "POST",
           headers: {
@@ -49,7 +51,7 @@ const CommentSection = ({ productId }) => {
     const getComments = async () => {
       try {
         const res = await fetch(
-          `http://localhost:8000/api/comment/getProductComment/${productId}`
+          `${API_URL}/api/comment/getProductComment/${productId}`
         );
         if (res.ok) {
           const data = await res.json();
@@ -69,7 +71,7 @@ const CommentSection = ({ productId }) => {
         return;
       }
       const res = await fetch(
-        `http://localhost:8000/api/comment/likeComment/${commentId}`,
+        `${API_URL}/api/comment/likeComment/${commentId}`,
         {
           method: "PUT",
           headers: {
@@ -114,7 +116,7 @@ const CommentSection = ({ productId }) => {
         return;
       }
       const res = await fetch(
-        `http://localhost:8000/api/comment/deleteComment/${commentId}`,
+        `${API_URL}/api/comment/deleteComment/${commentId}`,
         {
           method: "DELETE",
           headers: {

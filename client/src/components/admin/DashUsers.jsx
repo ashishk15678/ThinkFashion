@@ -7,6 +7,8 @@ import { useSelector } from "react-redux";
 
 import avatar from "../../assets/avatar.jpeg";
 
+const API_URL = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
+
 const DashUsers = () => {
   const { currentUser, accessToken } = useSelector((state) => state.user);
   const [users, setUsers] = useState([]);
@@ -23,7 +25,7 @@ const DashUsers = () => {
   const fetchUsers = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8000/api/users/getUsers?page=${currentPage}&perPage=${perPage}`,
+        `${API_URL}/api/users/getUsers?page=${currentPage}&perPage=${perPage}`,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -44,26 +46,27 @@ const DashUsers = () => {
 
   const handleDeleteUser = async () => {
     try {
-      const response = await fetch(`http://localhost:8000/api/users/deleteUser/${userId}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-      const data = await response.json();
-        if (response.ok) {
-            setUsers((prev) => prev.filter((user) => user._id !== userId));
-            setShowModal(false);
-        } else {
-            console.log(data.message);
+      const response = await fetch(
+        `${API_URL}/api/users/deleteUser/${userId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
         }
-
+      );
+      const data = await response.json();
+      if (response.ok) {
+        setUsers((prev) => prev.filter((user) => user._id !== userId));
+        setShowModal(false);
+      } else {
+        console.log(data.message);
+      }
     } catch (error) {
       console.error("Error deleting user:", error);
       alert("Failed to delete user: " + error.message);
     }
   };
-  
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -71,9 +74,9 @@ const DashUsers = () => {
 
   return (
     <div className="table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500">
-        <div>
-            <h1 className="text-center text-lg font-bold py-1">All users</h1>
-        </div>
+      <div>
+        <h1 className="text-center text-lg font-bold py-1">All users</h1>
+      </div>
       {currentUser.isAdmin && users.length > 0 ? (
         <>
           <Table hoverable className="shadow-md">

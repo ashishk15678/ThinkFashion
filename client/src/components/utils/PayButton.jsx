@@ -20,7 +20,7 @@
 //         if (data.url) {
 //           console.log(data.url);
 //           window.location.href = data.url;
-//         } 
+//         }
 //       })
 //       .catch((err) => console.log(err.message));
 //   };
@@ -45,6 +45,8 @@ const PayButton = ({ cartItems }) => {
   const { _id } = useSelector((state) => state.user.currentUser || {});
   const [loading, setLoading] = useState(false);
 
+  const API_URL = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
+
   const handleCheckout = async () => {
     if (!_id) {
       alert("Please login first to proceed to checkout.");
@@ -54,7 +56,7 @@ const PayButton = ({ cartItems }) => {
     try {
       setLoading(true);
 
-      const res = await fetch("http://localhost:8000/api/stripe/create-checkout-session", {
+      const res = await fetch(`${API_URL}/api/stripe/create-checkout-session`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -93,5 +95,3 @@ const PayButton = ({ cartItems }) => {
 };
 
 export default PayButton;
-
-

@@ -6,7 +6,7 @@
 //   const { productId } = useParams();
 //   const { accessToken } = useSelector((state) => state.user);
 //   const [loading, setLoading] = useState(false);
- 
+
 //   const [productData, setProductData] = useState({
 //     name: "",
 //     description: "",
@@ -63,19 +63,17 @@
 //     });
 //   };
 
-  
-
 //   const handleImageChange = (e) => {
-//     const file = e.target.files[0]; 
+//     const file = e.target.files[0];
 //     if (file) {
 //       setProductData({
 //         ...productData,
-//         productImage: file, 
+//         productImage: file,
 //       });
-      
+
 //     }
 //   };
-   
+
 //   const handleSubmit = async (e) => {
 //     e.preventDefault();
 //     setLoading(true);
@@ -91,8 +89,6 @@
 //       size,
 //       productImage,
 //     } = productData;
-    
-    
 
 //     const data = new FormData();
 //     data.append("name", name);
@@ -115,7 +111,7 @@
 //       });
 
 //       const responseData = await response.json();
-      
+
 //       if (response.ok) {
 //         setLoading(false);
 //         alert("Product updated successfully!");
@@ -145,14 +141,13 @@
 //           responseData.message || "Failed to update product"
 //         );
 //       }
-      
+
 //     } catch (error) {
 //       console.error("Error updating product:", error.message);
 //       alert("Failed to update product: " + error.message);
 //     }
 
 //   }
-
 
 //   return (
 //     <div className="py-32 flex flex-col justify-center items-center dark:text-gray-50 dark:bg-gray-900">
@@ -439,7 +434,9 @@ const EditPage = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/api/product/${productId}`);
+        const response = await fetch(
+          `http://localhost:8000/api/product/${productId}`
+        );
         if (!response.ok) throw new Error("Failed to fetch product");
 
         const data = await response.json();
@@ -509,13 +506,16 @@ const EditPage = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:8000/api/product/update/${productId}`, {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: data,
-      });
+      const response = await fetch(
+        `http://localhost:8000/api/product/update/${productId}`,
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: data,
+        }
+      );
 
       const result = await response.json();
 
@@ -536,7 +536,10 @@ const EditPage = () => {
   return (
     <div className="py-28 flex flex-col items-center dark:text-white dark:bg-gray-900 min-h-screen px-4">
       <h1 className="text-2xl font-semibold mb-6">Edit Product</h1>
-      <form onSubmit={handleSubmit} className="w-full max-w-md flex flex-col gap-4 dark:text-black">
+      <form
+        onSubmit={handleSubmit}
+        className="w-full max-w-md flex flex-col gap-4 dark:text-black"
+      >
         <input
           type="text"
           name="name"

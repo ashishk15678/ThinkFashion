@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
-import moment from 'moment';
+import moment from "moment";
 import { useSelector } from "react-redux";
 import { FaThumbsUp } from "react-icons/fa";
 import { Button, Textarea } from "flowbite-react";
 
+const API_URL = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
 
 const Comment = ({ comment, onLike, onEdit, onDelete }) => {
   const [user, setUser] = useState({});
@@ -15,7 +16,9 @@ const Comment = ({ comment, onLike, onEdit, onDelete }) => {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const res = await fetch(`http://localhost:8000/api/users/getUserById/${comment.userId}`);
+        const res = await fetch(
+          `${API_URL}/api/users/getUserById/${comment.userId}`
+        );
         const data = await res.json();
         if (res.ok) {
           setUser(data.data);
@@ -34,16 +37,19 @@ const Comment = ({ comment, onLike, onEdit, onDelete }) => {
   //console.log(comment);
   const handleSave = async () => {
     try {
-      const res = await fetch(`http://localhost:8000/api/comment/editComment/${comment._id}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${accessToken}`
-        },
-        body: JSON.stringify({
-          content: editedContent,
-        }),
-      });
+      const res = await fetch(
+        `${API_URL}/api/comment/editComment/${comment._id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify({
+            content: editedContent,
+          }),
+        }
+      );
       if (res.ok) {
         setIsEditing(false);
         onEdit(comment, editedContent);
@@ -52,7 +58,6 @@ const Comment = ({ comment, onLike, onEdit, onDelete }) => {
       console.log(error.message);
     }
   };
-  
 
   return (
     <div className="flex p-4 border-b dark:border-gray-600 text-sm">
@@ -75,23 +80,23 @@ const Comment = ({ comment, onLike, onEdit, onDelete }) => {
         {isEditing ? (
           <>
             <Textarea
-              className='mb-2'
+              className="mb-2"
               value={editedContent}
               onChange={(e) => setEditedContent(e.target.value)}
             />
-            <div className='flex justify-end gap-2 text-xs'>
+            <div className="flex justify-end gap-2 text-xs">
               <Button
-                type='button'
-                size='sm'
-                gradientDuoTone='purpleToBlue'
+                type="button"
+                size="sm"
+                gradientDuoTone="purpleToBlue"
                 onClick={handleSave}
               >
                 Save
               </Button>
               <Button
-                type='button'
-                size='sm'
-                gradientDuoTone='purpleToBlue'
+                type="button"
+                size="sm"
+                gradientDuoTone="purpleToBlue"
                 outline
                 onClick={() => setIsEditing(false)}
               >
@@ -101,39 +106,39 @@ const Comment = ({ comment, onLike, onEdit, onDelete }) => {
           </>
         ) : (
           <>
-            <p className='text-gray-500 pb-2'>{comment.content}</p>
-            <div className='flex items-center pt-2 text-xs border-t dark:border-gray-700 max-w-fit gap-2'>
+            <p className="text-gray-500 pb-2">{comment.content}</p>
+            <div className="flex items-center pt-2 text-xs border-t dark:border-gray-700 max-w-fit gap-2">
               <button
-                type='button'
+                type="button"
                 onClick={() => onLike(comment._id)}
                 className={`text-gray-400 hover:text-blue-500 ${
                   currentUser &&
                   comment.likes.includes(currentUser._id) &&
-                  '!text-blue-500'
+                  "!text-blue-500"
                 }`}
               >
-                <FaThumbsUp className='text-sm' />
+                <FaThumbsUp className="text-sm" />
               </button>
-              <p className='text-gray-400'>
+              <p className="text-gray-400">
                 {comment.numberOfLikes > 0 &&
                   comment.numberOfLikes +
-                    ' ' +
-                    (comment.numberOfLikes === 1 ? 'like' : 'likes')}
+                    " " +
+                    (comment.numberOfLikes === 1 ? "like" : "likes")}
               </p>
               {currentUser &&
                 (currentUser._id === comment.userId || currentUser.isAdmin) && (
                   <>
                     <button
-                      type='button'
+                      type="button"
                       onClick={handleEdit}
-                      className='text-gray-400 hover:text-blue-500'
+                      className="text-gray-400 hover:text-blue-500"
                     >
                       Edit
                     </button>
                     <button
-                      type='button'
+                      type="button"
                       onClick={() => onDelete(comment._id)}
-                      className='text-gray-400 hover:text-red-500'
+                      className="text-gray-400 hover:text-red-500"
                     >
                       Delete
                     </button>

@@ -32,8 +32,6 @@
 //     }
 //   };
 
-  
-
 //   return (
 //     <div className="py-10 w-full dark:bg-[rgb(16,23,42)] ">
 //       <div className="flex items-center justify-center py-4 md:py-8 flex-wrap">
@@ -84,7 +82,6 @@
 //   );
 // };
 
-
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -110,7 +107,9 @@ const Gallery = () => {
       if (category === "All") {
         url = "http://localhost:8000/api/product/all";
       } else {
-        url = `http://localhost:8000/api/product/all?categoryName=${encodeURIComponent(category)}`;
+        url = `http://localhost:8000/api/product/all?categoryName=${encodeURIComponent(
+          category
+        )}`;
       }
 
       const response = await fetch(url);
@@ -159,7 +158,9 @@ const Gallery = () => {
             </Link>
           ))
         ) : (
-          <p className="text-center col-span-3 text-gray-500">No products found.</p>
+          <p className="text-center col-span-3 text-gray-500">
+            No products found.
+          </p>
         )}
       </div>
     </div>
@@ -167,7 +168,6 @@ const Gallery = () => {
 };
 
 export default Gallery;
-
 
 // import React, { useEffect, useState } from "react";
 // import { Link } from "react-router-dom";
@@ -231,6 +231,3 @@ export default Gallery;
 // };
 
 // export default Gallery;
-
-
- 

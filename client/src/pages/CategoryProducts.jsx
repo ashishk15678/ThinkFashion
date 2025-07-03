@@ -10,12 +10,14 @@ const CategoryProducts = () => {
 
   const decodedCategory = decodeURIComponent(subCategory); // e.g. "Polo T-shirt"
 
+  const API_URL = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         setLoading(true);
         const response = await fetch(
-          `http://localhost:8000/api/product/all?categoryName=${decodedCategory}`
+          `${API_URL}/api/product/all?categoryName=${decodedCategory}`
         );
         const data = await response.json();
         setProducts(data.products || []);
@@ -55,4 +57,3 @@ const CategoryProducts = () => {
 };
 
 export default CategoryProducts;
-

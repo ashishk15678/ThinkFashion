@@ -3,35 +3,36 @@ import Sidebar from "../../components/admin/Sidebar";
 import { useSelector } from "react-redux";
 
 export default function AdminOrders() {
-  const { accessToken } = useSelector(state => state.user);
+  const { accessToken } = useSelector((state) => state.user);
   const [orders, setOrders] = useState([]);
+  const API_URL = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
 
   useEffect(() => {
-    fetch("/api/order/all", {
-      headers: { Authorization: `Bearer ${accessToken}` }
+    fetch(`${API_URL}/api/order/all`, {
+      headers: { Authorization: `Bearer ${accessToken}` },
     })
-      .then(res => res.json())
-      .then(data => setOrders(data.orders));
+      .then((res) => res.json())
+      .then((data) => setOrders(data.orders));
   }, [accessToken]);
 
   const changeStatus = (id, status) => {
-    fetch(`/api/order/update/${id}`, {
+    fetch(`${API_URL}/api/order/update/${id}`, {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${accessToken}`,
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ status })
+      body: JSON.stringify({ status }),
     }).then(() =>
-      setOrders(orders.map(o => o._id === id ? { ...o, status } : o))
+      setOrders(orders.map((o) => (o._id === id ? { ...o, status } : o)))
     );
   };
 
-  const deleteOrder = id => {
-    fetch(`/api/order/delete/${id}`, {
+  const deleteOrder = (id) => {
+    fetch(`${API_URL}/api/order/delete/${id}`, {
       method: "DELETE",
-      headers: { Authorization: `Bearer ${accessToken}` }
-    }).then(() => setOrders(orders.filter(o => o._id !== id)));
+      headers: { Authorization: `Bearer ${accessToken}` },
+    }).then(() => setOrders(orders.filter((o) => o._id !== id)));
   };
 
   return (
@@ -39,15 +40,25 @@ export default function AdminOrders() {
       <Sidebar />
       <main className="p-6">
         <h2 className="text-xl mb-4">Orders</h2>
-        {orders.map(o => (
+        {orders.map((o) => (
           <div key={o._id} className="border p-4 mb-3">
-            <p>Order#{o._id} – {o.status}</p>
-            <select onChange={e => changeStatus(o._id, e.target.value)} value={o.status}>
+            <p>
+              Order#{o._id} – {o.status}
+            </p>
+            <select
+              onChange={(e) => changeStatus(o._id, e.target.value)}
+              value={o.status}
+            >
               <option>Processing</option>
               <option>Shipped</option>
               <option>Delivered</option>
             </select>
-            <button onClick={() => deleteOrder(o._id)} className="btn btn-error btn-sm ml-2">Delete</button>
+            <button
+              onClick={() => deleteOrder(o._id)}
+              className="btn btn-error btn-sm ml-2"
+            >
+              Delete
+            </button>
           </div>
         ))}
       </main>

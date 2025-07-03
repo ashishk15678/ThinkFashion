@@ -8,6 +8,8 @@ function SignUp() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  const API_URL = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
@@ -17,7 +19,7 @@ function SignUp() {
     try {
       setLoading(true);
       setError(false);
-      const res = await fetch("http://localhost:8000/api/users/register", {
+      const res = await fetch(`${API_URL}/api/users/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -39,7 +41,6 @@ function SignUp() {
   };
 
   return (
-   
     <div className="font-sans text-gray-800 dark:text-gray-100 bg-white flex items-center mx-aut  px-4 py-32 dark:bg-gray-900 justify-center">
       <div className="max-w-4xl grid md:grid-cols-3 items-center shadow-md rounded-xl overflow-hidden">
         <div className="max-md:order-1 flex flex-col justify-center space-y-16 max-md:mt-16 min-h-full bg-gradient-to-r from-gray-900 to-gray-700 lg:px-8 px-4 py-4">
@@ -221,7 +222,6 @@ function SignUp() {
         </form>
       </div>
     </div>
-    
   );
 }
 

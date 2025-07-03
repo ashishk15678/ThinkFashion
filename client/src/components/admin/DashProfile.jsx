@@ -9,6 +9,8 @@ import {
 } from "../../redux/user/userSlice";
 import { useNavigate } from "react-router-dom";
 
+const API_URL = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
+
 const DashProfile = () => {
   const { currentUser, error, loading, accessToken } = useSelector(
     (state) => state.user
@@ -28,21 +30,21 @@ const DashProfile = () => {
     e.preventDefault();
     try {
       dispatch(updateStart());
-      const res = await fetch("http://localhost:8000/api/users/update-account", {
+      const res = await fetch(`${API_URL}/api/users/update-account`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
-          Authorization: accessToken ? `Bearer ${accessToken}` : '', // Check if accessToken exists
+          Authorization: accessToken ? `Bearer ${accessToken}` : "", // Check if accessToken exists
         },
         body: JSON.stringify(formData),
       });
       const data = await res.json();
-     // console.log(data.data);
+      // console.log(data.data);
       if (data.success === false) {
         dispatch(updateFailure(data));
         return;
       }
-  
+
       const { user, accessToken: accessToken2 } = data.data; // Use a different variable name to avoid conflict
       dispatch(updateSuccess({ user, accessToken: accessToken2 }));
     } catch (error) {
@@ -50,24 +52,22 @@ const DashProfile = () => {
     }
   };
 
-  const handleAvatarChange = async(e) => {
+  const handleAvatarChange = async (e) => {
     const file = e.target.files[0];
     const formData = new FormData();
     formData.append("avatar", file);
 
     try {
-
       dispatch(updateStart());
 
-      const response = await fetch("http://localhost:8000.app/api/users/avatar", {
+      const response = await fetch(`${API_URL}/api/users/avatar`, {
         method: "PATCH",
         headers: {
-          Authorization: accessToken ? `Bearer ${accessToken}` : '',
+          Authorization: accessToken ? `Bearer ${accessToken}` : "",
         },
         body: formData,
       });
 
-      
       const data = await response.json();
       const { user } = data.data;
 
@@ -77,13 +77,10 @@ const DashProfile = () => {
     } catch (error) {
       console.error("Error changing profile picture:", error);
       dispatch(updateFailure(error));
-
     }
   };
-  
 
   return (
-    
     <div className="relative py-14  mx-auto flex flex-col text-gray-700 dark:text-gray-200 bg-transparent shadow-none rounded-xl bg-clip-border">
       <h4 className="block font-sans text-2xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
         Profile
@@ -97,7 +94,7 @@ const DashProfile = () => {
         size="lg"
         onClick={() => document.getElementById("avatarInput").click()} // Trigger click event on hidden input when Avatar is clicked
         style={{ cursor: "pointer" }} // Change cursor to pointer when hovering over Avatar
-        />
+      />
       <input
         id="avatarInput"
         type="file"
@@ -146,13 +143,11 @@ const DashProfile = () => {
       </form>
       <div className="flex text-red-500">
         <button>Delete</button>
-       
       </div>
       <p className="text-red-700">
         {error ? error.message || "Something went wrong!" : ""}
       </p>
     </div>
-    
   );
 };
 

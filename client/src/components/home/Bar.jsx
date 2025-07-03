@@ -11,7 +11,6 @@
 //   const [products, setProducts] = useState([]);
 //   const [loading, setLoading] = useState(false);
 
-
 //   useEffect(() => {
 //     const fetchProductsByCategory = async () => {
 //       setLoading(true); // Set loading to true before fetching products
@@ -22,7 +21,7 @@
 //         }
 //         const data = await response.json();
 //         setProducts(data.products);
-       
+
 //           setLoading(false);
 //         // Set loading to false after 3 seconds
 //       } catch (error) {
@@ -38,7 +37,6 @@
 //     setSelectedCategory(category);
 //   };
 
-
 //   return (
 //     <div className="w-full   py-10 dark:bg-gray-900">
 //       <div className="flex  justify-evenly bg-gray-100 dark:bg-gray-700 py-4  dark:text-gray-50 text-gray-800">
@@ -50,7 +48,7 @@
 //         <Link
 //           className="btn btn-ghost text-lg "
 //           to="/search"
-          
+
 //         >
 //           All
 //         </Link>
@@ -82,7 +80,7 @@
 //           <Skeleton />
 //           <Skeleton />
 //         </div>
-        
+
 //       ) : (
 //         <div className='mt-10 grid md:grid-cols-2 lg:grid-cols-3 gap-10 px-10 ml-3 justify-center items-center md:justify-between'>
 //           {/* Map over the products and render PriceCard for each product */}
@@ -106,11 +104,15 @@ const Bar = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  const API_URL = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
+
   useEffect(() => {
     const fetchProductsByCategory = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`http://localhost:8000/api/product/all?categoryName=${selectedCategory}`);
+        const response = await fetch(
+          `${API_URL}/api/product/all?categoryName=${selectedCategory}`
+        );
         if (!response.ok) {
           throw new Error("Failed to fetch products");
         }
@@ -134,14 +136,35 @@ const Bar = () => {
     <div className="w-full py-10 dark:bg-gray-900">
       <div className="flex justify-evenly bg-gray-100 dark:bg-gray-700 py-4 dark:text-gray-50 text-gray-800">
         <Link className="btn btn-ghost text-lg md:flex hidden">SHOP NOW</Link>
-        <Link className="btn btn-ghost text-lg" to="/search">All</Link>
-        <button className="btn btn-ghost text-lg" onClick={() => handleCategoryClick("Men")}>MEN</button>
-        <button className="btn btn-ghost text-lg" onClick={() => handleCategoryClick("Women")}>WOMEN</button>
-        <button className="btn btn-ghost text-lg" onClick={() => handleCategoryClick("Kids")}>KIDS</button>
+        <Link className="btn btn-ghost text-lg" to="/search">
+          All
+        </Link>
+        <button
+          className="btn btn-ghost text-lg"
+          onClick={() => handleCategoryClick("Men")}
+        >
+          MEN
+        </button>
+        <button
+          className="btn btn-ghost text-lg"
+          onClick={() => handleCategoryClick("Women")}
+        >
+          WOMEN
+        </button>
+        <button
+          className="btn btn-ghost text-lg"
+          onClick={() => handleCategoryClick("Kids")}
+        >
+          KIDS
+        </button>
       </div>
       {loading ? (
         <div className="mt-10 grid md:grid-cols-2 lg:grid-cols-3 gap-10 px-10 ml-3">
-          {Array(6).fill().map((_, i) => <Skeleton key={i} />)}
+          {Array(6)
+            .fill()
+            .map((_, i) => (
+              <Skeleton key={i} />
+            ))}
         </div>
       ) : (
         <div className="mt-10 grid md:grid-cols-2 lg:grid-cols-3 gap-10 px-10 ml-3">

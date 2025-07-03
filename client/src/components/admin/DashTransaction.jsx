@@ -13,34 +13,36 @@ const DashTransaction = () => {
 
   const { accessToken } = useSelector((state) => state.user);
 
+  const API_URL = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
+
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch("http://localhost:8000/api/order/getAllOrders", {
+        const response = await fetch(`${API_URL}/api/order/getAllOrders`, {
           headers: {
-            Authorization: `Bearer ${accessToken}`
-          }
+            Authorization: `Bearer ${accessToken}`,
+          },
         });
         const data = await response.json();
-        setOrders(data.data); 
+        setOrders(data.data);
       } catch (error) {
         console.error("Error fetching orders:", error);
       }
     };
-  
+
     fetchOrders();
   }, [accessToken]); // Include accessToken in the dependency array
-  
+
   // Pagination Logic
   const indexOfLastOrder = currentPage * ordersPerPage;
   const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
   const currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder);
 
-  const paginate = pageNumber => setCurrentPage(pageNumber);
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const handleAction = (order) => {
     setIsAction(!isAction);
-    setOrderDetail(order) 
+    setOrderDetail(order);
   };
 
   return (
@@ -48,7 +50,12 @@ const DashTransaction = () => {
       {isAction ? (
         <div className="py-20">
           <OrderCard orderDetail={orderDetail} />
-          <button onClick={handleAction} className="mt-10 text-center bg-gray-600 px-10 py-2 rounded-md shadow-md text-white">back</button>
+          <button
+            onClick={handleAction}
+            className="mt-10 text-center bg-gray-600 px-10 py-2 rounded-md shadow-md text-white"
+          >
+            back
+          </button>
         </div>
       ) : (
         <div>
@@ -64,9 +71,9 @@ const DashTransaction = () => {
                 <Table.HeadCell>Status</Table.HeadCell>
                 <Table.HeadCell>Aciton</Table.HeadCell>
               </Table.Head>
-              
+
               <Table.Body className="divide-y">
-              {currentOrders.map((order) => (
+                {currentOrders.map((order) => (
                   <Table.Row
                     key={order._id}
                     className="bg-white dark:border-gray-700 dark:bg-gray-800"
@@ -75,7 +82,11 @@ const DashTransaction = () => {
                     <Table.Cell>{order.shipping.name}</Table.Cell>
                     <Table.Cell>${order.total}</Table.Cell>
                     <Table.Cell>
-                      {order.products.reduce((totalQuantity, product) => totalQuantity + product.quantity, 0)}
+                      {order.products.reduce(
+                        (totalQuantity, product) =>
+                          totalQuantity + product.quantity,
+                        0
+                      )}
                     </Table.Cell>
                     <Table.Cell>{order.delivery_status}</Table.Cell>
                     <Table.Cell>
@@ -89,20 +100,22 @@ const DashTransaction = () => {
                   </Table.Row>
                 ))}
               </Table.Body>
-              
             </Table>
           </div>
           <div className="flex justify-center mt-8">
             {/* Pagination Buttons */}
-            {Array.from({ length: Math.ceil(orders.length / ordersPerPage) }, (_, index) => (
-              <button
-                key={index}
-                onClick={() => paginate(index + 1)}
-                className={`mx-1 px-3 py-1 bg-blue-500 text-white rounded`}
-              >
-                {index + 1}
-              </button>
-            ))}
+            {Array.from(
+              { length: Math.ceil(orders.length / ordersPerPage) },
+              (_, index) => (
+                <button
+                  key={index}
+                  onClick={() => paginate(index + 1)}
+                  className={`mx-1 px-3 py-1 bg-blue-500 text-white rounded`}
+                >
+                  {index + 1}
+                </button>
+              )
+            )}
           </div>
         </div>
       )}

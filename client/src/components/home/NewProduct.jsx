@@ -41,7 +41,7 @@
 //                 <Skeleton/>
 //                 <Skeleton/>
 //                 <Skeleton/>
-                
+
 //               </>
 //             ) : (
 //               // Render products once data is fetched
@@ -65,10 +65,12 @@ const NewProduct = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const API_URL = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch("http://localhost:8000/api/product/all?page=1");
+        const response = await fetch(`${API_URL}/api/product/all?page=1`);
         if (!response.ok) throw new Error("Failed to fetch products");
         const data = await response.json();
         setProducts(data.products || []);
@@ -91,10 +93,14 @@ const NewProduct = () => {
         <div className="p-4 mx-auto lg:max-w-7xl sm:max-w-full">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 justify-center items-center md:justify-between">
             {loading
-              ? Array(8).fill().map((_, i) => <Skeleton key={i} />)
-              : products.slice(0, 8).map((product) => (
-                  <NewProductCard key={product._id} product={product} />
-                ))}
+              ? Array(8)
+                  .fill()
+                  .map((_, i) => <Skeleton key={i} />)
+              : products
+                  .slice(0, 8)
+                  .map((product) => (
+                    <NewProductCard key={product._id} product={product} />
+                  ))}
           </div>
         </div>
       </div>

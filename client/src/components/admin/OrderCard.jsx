@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import avatar from "../../assets/avatar.jpeg";
 import { useSelector } from "react-redux";
 
+const API_URL = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
+
 const OrderCard = ({ orderDetail }) => {
   const [orderedProducts, setOrderedProducts] = useState([]);
   const [status, setStatus] = useState("Processing");
@@ -14,7 +16,7 @@ const OrderCard = ({ orderDetail }) => {
         const productDetails = [];
         for (const product of orderDetail.products) {
           const response = await fetch(
-            `http://localhost:8000/api/product/getProduct/${product.productId}`
+            `${API_URL}/api/product/getProduct/${product.productId}`
           ); // Assuming you have an endpoint to fetch product details by productId
           const data = await response.json();
           if (data) {
@@ -39,7 +41,7 @@ const OrderCard = ({ orderDetail }) => {
     try {
       // Send a PATCH request to update the order status
       const response = await fetch(
-        `http://localhost:8000/api/order/updateDelivery/${orderDetail._id}`,
+        `${API_URL}/api/order/updateDelivery/${orderDetail._id}`,
         {
           method: "PATCH",
           headers: {
@@ -109,7 +111,7 @@ const OrderCard = ({ orderDetail }) => {
           <div>
             <h3 className="font-semibold">Status Info</h3>
             <span>
-            Status: <span className="text-red-600">{status}</span>
+              Status: <span className="text-red-600">{status}</span>
             </span>
           </div>
           <div className="flex justify-center items-center">
