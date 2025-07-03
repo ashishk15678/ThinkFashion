@@ -97,6 +97,8 @@ const Gallery = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [images, setImages] = useState([]);
 
+  const API_URL = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
+
   useEffect(() => {
     fetchProducts(selectedCategory);
   }, [selectedCategory]);
@@ -105,9 +107,9 @@ const Gallery = () => {
     try {
       let url;
       if (category === "All") {
-        url = "http://localhost:8000/api/product/all";
+        url = `${API_URL}/api/product/all`;
       } else {
-        url = `http://localhost:8000/api/product/all?categoryName=${encodeURIComponent(
+        url = `${API_URL}/api/product/all?categoryName=${encodeURIComponent(
           category
         )}`;
       }

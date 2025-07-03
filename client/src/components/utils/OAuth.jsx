@@ -62,7 +62,8 @@ export default function OAuth() {
       const auth = getAuth(app);
 
       const result = await signInWithPopup(auth, provider);
-      const res = await fetch("http://localhost:8000/api/users/google", {
+      const API_URL = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
+      const res = await fetch(`${API_URL}/api/users/google`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

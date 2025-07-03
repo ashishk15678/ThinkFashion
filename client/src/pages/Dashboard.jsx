@@ -13,25 +13,22 @@ import DashTransaction from "../components/admin/DashTransaction";
 import DashComments from "../components/admin/DashComments";
 import DashClientOrder from "../components/admin/DashClientOrder";
 
+const API_URL = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
+
 const Dashboard = () => {
   const dispatch = useDispatch();
   const { currentUser, loading, error, accessToken } = useSelector(
     (state) => state.user
   ); // Access accessToken from the Redux store
-  
 
   const handleSignOut = async () => {
     try {
-      const response = await fetch(
-        "http://localhost:8000/api/users/logout",
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${accessToken}`, // Include the access token in the request headers
-          }, // Adjust the method as needed
-          // Add any required headers or options
-        }
-      );
+      const response = await fetch(`${API_URL}/api/users/logout`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
 
       if (response.ok) {
         dispatch(signOut());
@@ -45,42 +42,38 @@ const Dashboard = () => {
   };
 
   const location = useLocation();
-  const [tab, setTab] = useState('');
+  const [tab, setTab] = useState("");
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
-    const tabFromUrl = urlParams.get('tab');
+    const tabFromUrl = urlParams.get("tab");
     if (tabFromUrl) {
       setTab(tabFromUrl);
     }
   }, [location.search]);
 
- 
-
   return (
-    
-      <div className="min-h-screen mt-16 dark:bg-gray-900 flex flex-col md:flex-row">
-      <div className='md:w-56 mt-2'>
+    <div className="min-h-screen mt-16 dark:bg-gray-900 flex flex-col md:flex-row">
+      <div className="md:w-56 mt-2">
         {/* Sidebar */}
         <DashSidebar />
       </div>
       {/* profile... */}
-      {tab === 'profile' && <DashProfile />}
+      {tab === "profile" && <DashProfile />}
       {/* products */}
-      {tab === 'products' && <DashProducts />}
+      {tab === "products" && <DashProducts />}
       {/*Add product*/}
-      {tab === 'addproduct' && <DashAddProduct />}
+      {tab === "addproduct" && <DashAddProduct />}
       {/*All users */}
-      {tab === 'users' && <DashUsers />}
+      {tab === "users" && <DashUsers />}
       {/* dashboard comp */}
-      {tab === 'dash' && <DashboardComp />}
+      {tab === "dash" && <DashboardComp />}
       {/* Transaction  */}
-      {tab === 'transaction' && <DashTransaction /> }
+      {tab === "transaction" && <DashTransaction />}
       {/* comments */}
-      {tab === 'comments' && <DashComments />}
+      {tab === "comments" && <DashComments />}
       {/*client order */}
-      {tab === 'clientOrder' && <DashClientOrder />}
+      {tab === "clientOrder" && <DashClientOrder />}
     </div>
-    
   );
 };
 

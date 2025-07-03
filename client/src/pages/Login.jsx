@@ -15,6 +15,8 @@ const Login = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const API_URL = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
@@ -23,7 +25,7 @@ const Login = () => {
     e.preventDefault();
     try {
       dispatch(signInStart());
-      const res = await fetch("http://localhost:8000/api/users/login", {
+      const res = await fetch(`${API_URL}/api/users/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

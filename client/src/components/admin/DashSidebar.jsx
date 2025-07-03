@@ -1,5 +1,12 @@
 import { Sidebar } from "flowbite-react";
-import { HiUser, HiArrowSmRight, HiDocumentText, HiOutlineUserGroup, HiChartPie, HiAnnotation } from "react-icons/hi";
+import {
+  HiUser,
+  HiArrowSmRight,
+  HiDocumentText,
+  HiOutlineUserGroup,
+  HiChartPie,
+  HiAnnotation,
+} from "react-icons/hi";
 import { MdOutlineProductionQuantityLimits } from "react-icons/md";
 import { RiMoneyDollarCircleLine } from "react-icons/ri";
 import { IoIosAddCircleOutline } from "react-icons/io";
@@ -8,6 +15,8 @@ import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { signOut } from "../../redux/user/userSlice";
+
+const API_URL = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
 
 const DashSidebar = () => {
   const location = useLocation();
@@ -55,7 +64,7 @@ const DashSidebar = () => {
   //       },
   //       credentials: "include", // ✅ Ensure cookies are sent
   //     });
-  
+
   //     if (response.ok) {
   //       dispatch(signOut());
   //       navigate("/login");
@@ -67,18 +76,17 @@ const DashSidebar = () => {
   //     alert("Logout failed");
   //   }
   // };
-  
+
   const handleSignOut = async () => {
     try {
-      const response = await fetch("http://localhost:8000/api/users/logout", {
+      const response = await fetch(`${API_URL}/api/users/logout`, {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${accessToken}`, // ✅ Must include token
+          Authorization: `Bearer ${accessToken}`,
         },
-        credentials: "include", // ✅ Include cookies
+        credentials: "include",
       });
-      
-  
+
       if (response.ok) {
         dispatch(signOut());
         navigate("/login");
@@ -89,18 +97,17 @@ const DashSidebar = () => {
       console.error("Logout error:", error.message);
     }
   };
-  
 
   return (
     <Sidebar className="w-full md:w-60">
       <Sidebar.Items>
         <Sidebar.ItemGroup className="flex flex-col gap-1">
-        {currentUser && currentUser.isAdmin && (
-            <Link to='/dashboard?tab=dash'>
+          {currentUser && currentUser.isAdmin && (
+            <Link to="/dashboard?tab=dash">
               <Sidebar.Item
-                active={tab === 'dash' || !tab}
+                active={tab === "dash" || !tab}
                 icon={HiChartPie}
-                as='div'
+                as="div"
               >
                 Dashboard
               </Sidebar.Item>
@@ -183,10 +190,11 @@ const DashSidebar = () => {
               </Sidebar.Item>
             </Link>
           )}
-          <Sidebar.Item icon={HiArrowSmRight}
-           className="cursor-pointer"
-           onClick={handleSignOut}
-           >
+          <Sidebar.Item
+            icon={HiArrowSmRight}
+            className="cursor-pointer"
+            onClick={handleSignOut}
+          >
             Sign Out
           </Sidebar.Item>
         </Sidebar.ItemGroup>
